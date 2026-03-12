@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel/
+.vercel-error.txt
+vercel-error-utf8.txt
+
+# Data (Sensitive/Large GeoJSON & Mappings)
+vercel_data/
+services/data/
+large_file_schemas.json
+
+# Test Output & Results
+test_results.txt
+suite_results.txt
+suite_report.html
+suite_report.json
+api_response.json
+diagnose_output.json
+nominatim_results.json
+test_Delhi.json
+test_Mumbai.json
+test_Rural_UP.json
+
+# Logs
+logs.txt
+

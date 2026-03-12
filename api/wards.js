@@ -1,0 +1,33 @@
+const { getEnrichedSpatialData } = require('../services/spatial');
+const { getIndianJurisdiction } = require('../services/geocoding');
+
+module.exports = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+    if (req.method === 'OPTIONS') return res.status(200).end();
+
+    const { lat, lon } = req.query;
+    if (!lat || !lon) return res.status(400).json({ error: 'Missing lat/lon' });
+
+    try {
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lon);
+
+        // Get cityName for ward lookup
+        const jurResult = await getIndianJurisdiction(latitude, longitude);
+        const cityName = jurResult.jurisdiction?.city || jurResult.jurisdiction?.locality;
+
+        // Only fetch ward data here
+        const enrichedData = await getEnrichedSpatialData(latitude, longitude, cityName, false);
+
+        return res.status(200).json({
+            success: true,
+            metro_data: enrichedData.metro_ward || enrichedData.municipal_ward
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};

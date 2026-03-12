@@ -1,0 +1,186 @@
+:root {
+    --primary: #4F46E5; /* Indigo 600 */
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-blur: blur(12px);
+    --text-main: #111827;
+    --text-muted: #4B5563;
+    --border: rgba(255, 255, 255, 0.3);
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --radius: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    overflow: hidden; /* Prevent scrolling, map handles it */
+}
+
+/* Fullscreen Map */
+#map {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Map is in background */
+}
+
+/* UI Overlay that sits above the Leaflet map */
+.ui-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* Above leafet */
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    pointer-events: none; /* Let clicks pass through empty space */
+}
+
+.header-card, .result-card {
+    pointer-events: auto; /* Re-enable clicks on the cards themselves */
+    background: var(--surface);
+    backdrop-filter: var(--surface-blur);
+    -webkit-backdrop-filter: var(--surface-blur);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.header-card h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.header-card p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.result-card.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+.result-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.jurisdiction-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+.jurisdiction-item:last-child {
+    margin-bottom: 0;
+}
+
+.jurisdiction-item .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.jurisdiction-item .value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.text-sm { font-size: 0.875rem !important; }
+.text-gray { color: var(--text-muted) !important; }
+
+/* Loading Spinner */
+#loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+#loading.hidden {
+    display: none;
+}
+
+.spinner {
+    border: 3px solid rgba(79, 70, 229, 0.2);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error States */
+.error {
+    color: #DC2626; /* Red 600 */
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.error.hidden {
+    display: none;
+}
+
+/* Distance Badges */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 999px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.badge-distance {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.infra-section h3 {
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .ui-container {
+        width: calc(100% - 40px);
+        top: 20px;
+        left: 20px;
+        right: 20px;
+    }
+}

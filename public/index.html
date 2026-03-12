@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Jurisdictions Explorer</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+
+    <!-- Fullscreen Map Container -->
+    <div id="map"></div>
+
+    <!-- UI Overlay for Instructions and Results -->
+    <div class="ui-container">
+        <div class="header-card">
+            <h1>Indian Jurisdictions Explorer</h1>
+            <p>Click anywhere on the map to determine exactly which State, District, Municipality or Panchayat governs that coordinate.</p>
+        </div>
+
+        <div id="result-card" class="result-card hidden">
+            <div id="loading" class="hidden">
+                 <div class="spinner"></div>
+                 <p>Locating Jurisdiction...</p>
+            </div>
+            
+            <div id="content">
+                <div class="jurisdiction-item">
+                    <span class="label">State</span>
+                    <span id="res-state" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label">District / Zila Parishad</span>
+                    <span id="res-district" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label">Sub-District / Tehsil</span>
+                    <span id="res-subdistrict" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label">Municipality / Corporation</span>
+                    <span id="res-municipality" class="value">--</span>
+                </div>
+                <div id="metro-ward-row" class="jurisdiction-item hidden">
+                    <span class="label">Municipal Ward / Zone</span>
+                    <span id="res-metroward" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label">Panchayat / Ward</span>
+                    <span id="res-panchayat" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label">Pincode</span>
+                    <span id="res-pincode" class="value">--</span>
+                </div>
+                <div class="jurisdiction-item" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">
+                    <span class="label" style="color: var(--primary);">Parliamentary Constituency (MP)</span>
+                    <span id="res-mp" class="value" style="font-weight: 700;">--</span>
+                </div>
+                <div class="jurisdiction-item">
+                    <span class="label" style="color: var(--primary);">Assembly Constituency (MLA)</span>
+                    <span id="res-mla" class="value" style="font-weight: 700;">--</span>
+                </div>
+
+                <div class="infra-section" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-gray); margin: 0;">Infrastructure & Safety</h3>
+                        <button id="toggle-infra" class="badge" style="cursor: pointer; background: rgba(255,255,255,0.1); border: none; font-size: 0.7rem;">Show Details</button>
+                    </div>
+                    <div id="infra-content" class="hidden">
+
+                    <div class="jurisdiction-item">
+                        <span class="label">Nearest Police Station</span>
+                        <span id="res-police" class="value">--</span>
+                    </div>
+                    <div class="jurisdiction-item">
+                        <span class="label">Nearest Highway</span>
+                        <span id="res-highway" class="value">--</span>
+                    </div>
+                    <div class="jurisdiction-item">
+                        <span class="label">Nearest Railway</span>
+                        <span id="res-railway" class="value">--</span>
+                    </div>
+                    </div>
+                </div>
+                
+                <div id="wiki-insight" class="jurisdiction-item hidden" style="background: rgba(79, 70, 229, 0.05); padding: 12px; border-radius: 8px; margin-top: 16px; border: 1px solid rgba(79, 70, 229, 0.2);">
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <img id="res-wiki-img" src="" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; display: none;" />
+                        <div>
+                            <span id="res-wiki-title" class="label" style="color: var(--primary); margin-bottom: 2px;">--</span>
+                            <span id="res-wiki-desc" class="value text-sm text-gray" style="font-style: italic; display: block; margin-bottom: 6px;">--</span>
+                            <span id="res-wiki-extract" class="value text-sm" style="line-height: 1.4; display: block; max-height: 120px; overflow-y: auto;">--</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="error hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="/app.js"></script>
+</body>
+</html>

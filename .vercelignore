@@ -1,0 +1,17 @@
+# Exclude large source folders
+INDIAN-SHAPEFILES-master
+Municipal_Spatial_Data-master
+maps-master
+
+# Standard ignores
+node_modules
+.git
+
+# Keep essential root files and folders
+!vercel.json
+!package.json
+!package-lock.json
+!api/
+!services/
+!public/
+!vercel_data/
