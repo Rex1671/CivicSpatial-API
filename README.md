@@ -60,24 +60,21 @@ CivicSpatial API is a sophisticated geographical intelligence and representation
    npm start
    ```
 
+## 🌐 Live Demo & Testing
+
+A live version of the API is deployed on Vercel for testing:
+- **Test Endpoint**: [https://represetative.vercel.app/api/electoral?lat=19.0760&lon=72.8777](https://represetative.vercel.app/api/electoral?lat=19.0760&lon=72.8777)
+
 ## 📡 API Endpoints
 
-The API is structured as independent serverless functions for scalability.
+The API is structured as independent serverless functions for scalability. Use the query parameters `lat` and `lon` for all endpoints.
 
-### Vercel Serverless Endpoints
-- **Jurisdiction**: `/api/jurisdiction?lat={lat}&lon={lon}` — Returns administrative state/district data.
-- **Electoral**: `/api/electoral?lat={lat}&lon={lon}` — Returns Parliamentary and Assembly constituency data.
-- **Representatives**: `/api/representatives?lat={lat}&lon={lon}` — Returns details about elected officials.
-- **Wards**: `/api/wards?lat={lat}&lon={lon}` — Returns municipal/panchayat ward information.
-- **Infrastructure**: `/api/infrastructure?lat={lat}&lon={lon}` — Returns proximity to highways, railways, and police stations.
-- **Health**: `/api/health` — Service status check.
+### 🏙️ Jurisdiction
+`/api/jurisdiction?lat={lat}&lon={lon}`
+> Returns administrative state, district, and locality data enriched with Wikipedia insights.
 
-### Combined Endpoint
-- **Place Data**: `/api/place-data?lat={lat}&lon={lon}` — Aggregates all the above data into a single response.
-
-## 📦 Sample JSON Response
-
-`GET /api/jurisdiction?lat=19.0760&lon=72.8777`
+<details>
+<summary>View Sample Response</summary>
 
 ```json
 {
@@ -85,15 +82,97 @@ The API is structured as independent serverless functions for scalability.
   "jurisdiction": {
     "state": "Maharashtra",
     "district_zila_parishad": "Mumbai Suburban district",
+    "municipality_corporation": "Mumbai",
+    "local_body_panchayat_ward": "L Ward",
     "city": "Mumbai",
     "locality": "Mumbai",
-    "sub_district": "Kurla",
-    "local_body_panchayat_ward": "L Ward"
+    "raw_country": "India"
   },
-  "matched_on": "Mumbai",
-  "article_url": "https://en.wikipedia.org/wiki/Mumbai"
+  "insights": {
+    "title": "Mumbai",
+    "description": "Capital of Maharashtra, India",
+    "article_url": "https://en.wikipedia.org/wiki/Mumbai"
+  }
 }
 ```
+</details>
+
+### 🗳️ Electoral
+`/api/electoral?lat={lat}&lon={lon}`
+> Returns Parliamentary (MP) and Assembly (MLA) constituency details.
+
+<details>
+<summary>View Sample Response</summary>
+
+```json
+{
+  "success": true,
+  "representatives": {
+    "mp": { "name": "Mumbai North Central", "state": "Maharashtra" },
+    "mla": { "name": "Vile Parle", "no": 167, "state": "MAHARASHTRA" }
+  }
+}
+```
+</details>
+
+### 👤 Representatives
+`/api/representatives?lat={lat}&lon={lon}`
+> Combines jurisdiction, electoral, and Wikipedia insights into a single profile.
+
+<details>
+<summary>View Sample Response</summary>
+
+```json
+{
+  "success": true,
+  "jurisdiction": { "state": "Maharashtra", "city": "Mumbai" },
+  "representatives": {
+    "mp": { "name": "Mumbai North Central" },
+    "mla": { "name": "Vile Parle" }
+  },
+  "insights": { "title": "Mumbai", "article_url": "https://en.wikipedia.org/wiki/Mumbai" }
+}
+```
+</details>
+
+### 🏥 Infrastructure
+`/api/infrastructure?lat={lat}&lon={lon}`
+> Provides proximity data for highways, railways, and police stations.
+
+<details>
+<summary>View Sample Response</summary>
+
+```json
+{
+  "success": true,
+  "infrastructure": {
+    "police_station": {
+      "properties": { "ps": "PALGHAR", "district": "RAILWAY MUMBAI" },
+      "distance_km": 0.01
+    }
+  }
+}
+```
+</details>
+
+### 🏘️ Wards
+`/api/wards?lat={lat}&lon={lon}`
+> Returns municipal or panchayat ward information.
+
+<details>
+<summary>View Sample Response</summary>
+
+```json
+{
+  "success": true,
+  "metro_data": {
+    "Name": "L Ward",
+    "Zone": "Zone 5",
+    "City": "MUMBAI"
+  }
+}
+```
+</details>
 
 ## 📄 License
 This project is licensed under the ISC License.
