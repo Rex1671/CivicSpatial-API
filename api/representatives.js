@@ -4,7 +4,6 @@ const { getEnrichedSpatialData } = require('../services/spatial');
 const { getWikipediaData } = require('../services/wikipedia');
 
 module.exports = async (req, res) => {
-    // Enable CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -28,7 +27,6 @@ module.exports = async (req, res) => {
     }
 
     try {
-        // Get Jurisdiction Details
         const jurResult = await getIndianJurisdiction(latitude, longitude);
         if (jurResult.error) {
             return res.status(400).json(jurResult);
@@ -36,13 +34,11 @@ module.exports = async (req, res) => {
         const jrn = jurResult.jurisdiction;
         const cityName = jrn.city || jrn.locality;
 
-        // Run Spatial Enrichment (just for sub-district now) and Constituencies concurrently
         const [electoralData, enrichedData] = await Promise.all([
             getConstituencies(latitude, longitude),
             getEnrichedSpatialData(latitude, longitude, cityName, false)
         ]);
 
-        // Fetch Wikipedia Insights
         const searchTerms = [
             jrn.city,
             jrn.locality,
@@ -52,7 +48,6 @@ module.exports = async (req, res) => {
         ].filter(Boolean);
         const wikiData = await getWikipediaData(searchTerms);
 
-        // Assemble Representative Payload
         return res.status(200).json({
             success: true,
             jurisdiction: {
