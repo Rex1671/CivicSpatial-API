@@ -9,9 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Serve frontend UI
+app.use(express.static('public')); 
 
-// Complete Vercel Endpoint Implementations
 const getRepresentativesVercel = require('./api/representatives');
 const getWardsVercel = require('./api/wards');
 const getInfrastructureVercel = require('./api/infrastructure');
@@ -25,7 +24,6 @@ app.get('/api/jurisdiction', getJurisdictionVercel);
 app.get('/api/electoral', getElectoralVercel);
 app.get('/api/health', (req, res) => res.json({ status: 'ok', local: true }));
 
-// Original Combined Complete Data Endpoint (For monolithic deployment)
 app.get('/api/place-data', async (req, res) => {
     const { lat, lon } = req.query;
 
@@ -41,7 +39,6 @@ app.get('/api/place-data', async (req, res) => {
     }
 
     try {
-        // 1. Get Jurisdiction via BigDataCloud/Nominatim
         const jurResult = await getIndianJurisdiction(latitude, longitude);
         if (jurResult.error) {
             return res.status(400).json(jurResult);
@@ -49,13 +46,10 @@ app.get('/api/place-data', async (req, res) => {
 
         const jrn = jurResult.jurisdiction;
 
-        // 2. Get Parliamentary and Assembly Constituencies
         const electoralData = await getConstituencies(latitude, longitude);
 
-        // 3. Get Enriched Spatial Data (Wards, Police, Infrastructure, etc.)
         const enrichedData = await getEnrichedSpatialData(latitude, longitude, jrn.city || jrn.locality);
 
-        // 4. Get Wikipedia extended data
         const searchTerms = [
             jrn.city,
             jrn.locality,
