@@ -16,11 +16,9 @@ module.exports = async (req, res) => {
         const latitude = parseFloat(lat);
         const longitude = parseFloat(lon);
 
-        // Get cityName for ward lookup
         const jurResult = await getIndianJurisdiction(latitude, longitude);
         const cityName = jurResult.jurisdiction?.city || jurResult.jurisdiction?.locality;
 
-        // Only fetch ward data here
         const enrichedData = await getEnrichedSpatialData(latitude, longitude, cityName, false);
 
         return res.status(200).json({
