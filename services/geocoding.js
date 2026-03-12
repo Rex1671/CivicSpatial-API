@@ -1,11 +1,6 @@
 const axios = require('axios');
 
-/**
- * Fetches Reverse Geocoding data from BigDataCloud and maps to Indian Jurisdiction
- * @param {number} lat - Latitude
- * @param {number} lon - Longitude
- * @returns {object} Maps basic jurisdiction boundaries
- */
+
 async function getIndianJurisdiction(lat, lon) {
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
     try {
@@ -35,9 +30,7 @@ async function getIndianJurisdiction(lat, lon) {
             if ([7, 8, 9, 10].includes(ad.adminLevel)) jurisdiction.local_body_panchayat_ward = ad.name;
         }
 
-        // --- SECONDARY FETCH FOR PANCHAYAT ---
-        // BigDataCloud often misses the deep rural level (Village/Panchayat). 
-        // We do a secondary, highly targeted call to Nominatim mapping just the "village", "hamlet", or "suburb"
+  
         try {
             const nomUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&zoom=18`;
             const nomRes = await axios.get(nomUrl, {
@@ -48,7 +41,6 @@ async function getIndianJurisdiction(lat, lon) {
                 const add = nomRes.data.address;
                 const panchayatProxy = add.village || add.hamlet || add.suburb || add.neighbourhood || add.town;
                 
-                // Only overwrite if BigDataCloud didn't find a local body, or if Nominatim found a "village"
                 if (panchayatProxy && (!jurisdiction.local_body_panchayat_ward || add.village)) {
                     jurisdiction.local_body_panchayat_ward = panchayatProxy + (add.village ? ' (Village/Panchayat)' : ' (Ward/Locality)');
                 }
