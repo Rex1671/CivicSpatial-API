@@ -32,7 +32,7 @@ async function getWikipediaData(placeNames) {
         }
     }
     
-    return null; // Exhausted all options
+    return null;
 }
 
 module.exports = { getWikipediaData };
