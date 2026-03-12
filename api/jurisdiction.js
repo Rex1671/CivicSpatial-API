@@ -3,7 +3,6 @@ const { getWikipediaData } = require('../services/wikipedia');
 const { getEnrichedSpatialData } = require('../services/spatial');
 
 module.exports = async (req, res) => {
-    // Enable CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -27,7 +26,6 @@ module.exports = async (req, res) => {
     }
 
     try {
-        // 1. Get Jurisdiction via BigDataCloud/Nominatim
         const jurResult = await getIndianJurisdiction(latitude, longitude);
         if (jurResult.error) {
             return res.status(400).json(jurResult);
@@ -35,7 +33,6 @@ module.exports = async (req, res) => {
 
         const jrn = jurResult.jurisdiction;
 
-        // 2. Get Wikipedia data and Sub-district concurrently
         const [wikiData, enrichedData] = await Promise.all([
             getWikipediaData([
                 jrn.city,
