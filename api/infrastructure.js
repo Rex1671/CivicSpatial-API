@@ -15,7 +15,6 @@ module.exports = async (req, res) => {
         const latitude = parseFloat(lat);
         const longitude = parseFloat(lon);
 
-        // Only fetch infra data here
         const enrichedData = await getEnrichedSpatialData(latitude, longitude, null, false);
 
         return res.status(200).json({
