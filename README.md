@@ -1,7 +1,7 @@
 # CivicSpatial API
 > **Geographical intelligence API mapping GPS coordinates to jurisdictions, infrastructure, and elected representatives.**
 
-CivicSpatial API is a sophisticated geographical intelligence and representation lookup service. It maps precise GPS coordinates to administrative jurisdictions, infrastructure data, and elected representatives (MPs, MLAs, and CMs).
+CivicSpatial API is a  geographical intelligence and representation lookup service. It maps precise GPS coordinates to administrative jurisdictions, infrastructure data, and elected representatives (MPs, MLAs, and CMs).
 
 
 ## 🚀 Features
