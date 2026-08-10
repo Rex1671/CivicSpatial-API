@@ -37,7 +37,7 @@ CivicSpatial API is a  geographical intelligence and representation lookup servi
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/civic-spatial-api.git
+   git clone https://github.com/RakeshRautDev/civic-spatial-api.git
    cd civic-spatial-api
    ```
 
